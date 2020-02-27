@@ -6,6 +6,7 @@ const App = () => {
   return (
     <div className="app">
       <SyncedEditor />
+      <SyncedEditor />
     </div>
   );
 };
