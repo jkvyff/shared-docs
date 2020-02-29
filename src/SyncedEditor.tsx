@@ -61,6 +61,8 @@ export const SyncedEditor = () => {
   return (
     <>
       <div className="editor">
+        <button className="btn">Save</button>
+        <hr />
         <Slate editor={editor} value={value} onChange={updateOperations}>
           <Editable />
         </Slate>

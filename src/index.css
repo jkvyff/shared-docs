@@ -15,12 +15,49 @@ code {
     monospace;
 }
 
+hr {
+  margin-bottom: 20px;
+}
+
+.btn {
+  margin: 5px 0px;
+  max-width: 740px;
+  background-color: salmon;
+  outline: none;
+  color: white;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  font: 1em/1 sans-serif;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  -webkit-transition: background-color 0.4s;
+  -moz-transition: background-color 0.4s;
+  -o-transition: background-color 0.4s;
+  transition: background-color 0.4s;
+}
+.btn:hover,
+.btn:focus {
+  background-color: lightsalmon;
+}
+.btn:active {
+  -webkit-transition: transform 0.2s;
+  -moz-transition: transform 0.2s;
+  -o-transition: transform 0.2s;
+  transition: transform 0.2s;
+  -webkit-transform: scale(0.95);
+  -moz-transform: scale(0.95);
+  -ms-transform: scale(0.95);
+  transform: scale(0.95);
+}
+
 .editor {
   color: rgb(17, 17, 17);
   max-width: 740px;
   background-color: white;
   box-shadow: rgba(118, 143, 255, 0.1) 0px 16px 24px 0px;
   padding: 40px;
-  margin: 65px auto 45px;
+  margin: 35px auto 45px;
   border-radius: 4.5px;
 }
