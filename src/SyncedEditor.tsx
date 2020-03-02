@@ -74,10 +74,25 @@ export const SyncedEditor: React.FC<Props> = ({ groupId }) => {
     [editor.operations, groupId]
   );
 
+  const saveDoc = useCallback(() => {
+    fetch(`http://localhost:4000/docs/${groupId}`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ body: value })
+    })
+      .then(res => res.json())
+      .then(json => console.log(json));
+  }, [value, groupId]);
+
   return (
     <>
       <div className="editor">
-        <button className="btn">Save</button>
+        <button className="btn" onClick={saveDoc}>
+          Save
+        </button>
         <hr />
         <Slate editor={editor} value={value} onChange={updateOperations}>
           <Editable />
