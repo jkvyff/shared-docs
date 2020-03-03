@@ -1,14 +1,7 @@
-import React, {
-  useMemo,
-  useState,
-  useEffect,
-  useRef,
-  useCallback
-} from "react";
+import React, { useMemo, useEffect, useRef, useCallback } from "react";
 import { Editor, createEditor, Operation } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 import { withHistory } from "slate-history";
-import { initialValue } from "./slateInitialValue";
 
 import io from "socket.io-client";
 import { Leaf, Element } from "./Formatting";
@@ -16,26 +9,21 @@ import { Leaf, Element } from "./Formatting";
 const socket = io("http://localhost:4000");
 
 interface Props {
+  value: any;
+  setValue: any;
   groupId: string;
+  handleTime: any;
 }
 
-export const SyncedEditor: React.FC<Props> = ({ groupId }) => {
+export const SyncedEditor: React.FC<Props> = ({
+  value,
+  setValue,
+  groupId,
+  handleTime
+}) => {
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
-  const [value, setValue] = useState(initialValue);
   const remote = useRef(false);
   const id = useRef(`${Date.now()}`);
-  const [updatedTime, setUpdatedTime] = useState("");
-  const dayOptions: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "long",
-    day: "numeric"
-  };
-  const timeOptions: Intl.DateTimeFormatOptions = {
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    timeZoneName: "short"
-  };
   const socketchange = useRef(false);
   const renderElement = useCallback(props => <Element {...props} />, []);
   const renderLeaf = useCallback(props => <Leaf {...props} />, []);
@@ -45,7 +33,7 @@ export const SyncedEditor: React.FC<Props> = ({ groupId }) => {
       .then(res => res.json())
       .then(json => {
         setValue(JSON.parse(json[0].body));
-        setUpdatedTime(json[0].timestamp.toString());
+        handleTime(json[0].timestamp.toString());
       })
       .catch(err => {
         console.error("Error:", err);
@@ -72,7 +60,7 @@ export const SyncedEditor: React.FC<Props> = ({ groupId }) => {
     return () => {
       socket.off(eventName);
     };
-  }, [editor, groupId]);
+  }, [editor, groupId, handleTime, setValue]);
 
   const updateOperations = useCallback(
     (options: any) => {
@@ -90,21 +78,8 @@ export const SyncedEditor: React.FC<Props> = ({ groupId }) => {
       }
       socketchange.current = false;
     },
-    [editor.operations, groupId]
+    [editor.operations, groupId, setValue]
   );
-
-  const saveDoc = useCallback(() => {
-    fetch(`http://localhost:4000/docs/${groupId}`, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ body: value })
-    })
-      .then(res => res.json())
-      .then(json => setUpdatedTime(json.timestamp));
-  }, [value, groupId]);
 
   const isMarkActive = (editor: any, format: string) => {
     const marks = Editor.marks(editor);
@@ -128,15 +103,6 @@ export const SyncedEditor: React.FC<Props> = ({ groupId }) => {
   return (
     <>
       <div className="editor">
-        <div>
-          {new Date(updatedTime).toLocaleDateString("en-US", dayOptions)}
-        </div>
-        <div>
-          {new Date(updatedTime).toLocaleTimeString("en-US", timeOptions)}
-        </div>
-        <button className="btn btn-first" onClick={saveDoc}>
-          Save
-        </button>
         <button className="btn" onMouseDown={toggleMark}>
           Bold
         </button>
@@ -145,7 +111,7 @@ export const SyncedEditor: React.FC<Props> = ({ groupId }) => {
           <Editable
             renderElement={renderElement}
             renderLeaf={renderLeaf}
-            placeholder="Edit the text for all to see what you made."
+            placeholder="Edit the text for all to see."
           />
         </Slate>
       </div>

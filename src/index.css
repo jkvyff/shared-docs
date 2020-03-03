@@ -10,10 +10,6 @@ body {
   background-color: rgb(240, 240, 240);
 }
 
-h3 {
-  margin: 10px 35px;
-}
-
 .sidebar {
   height: 45px;
   width: 100%;
@@ -30,8 +26,25 @@ h3 {
     width: 200px;
     top: 0;
     color: #dddddd;
-    padding: 30px;
+    padding: 90px 30px 0px 30px;
   }
+}
+.sidebar .title {
+  float: left;
+  font-size: 18px;
+  margin: 10px 5%;
+}
+
+.sidebar .time p.left {
+  margin: 0;
+  float: left;
+  color: #bbbbbb;
+}
+
+.sidebar .time p {
+  margin: 0;
+  text-align: right;
+  color: #bbbbbb;
 }
 
 .sidebar p {
@@ -40,11 +53,11 @@ h3 {
   word-wrap: break-word;
 }
 
-.sidebar p:last-of-type {
+.sidebar p.last {
   height: 50px;
   position: absolute;
   width: 200px;
-  bottom: 0;
+  bottom: 50px;
   color: #bbbbbb;
   list-style-type: none;
   padding-bottom: 5.5em;
@@ -101,9 +114,28 @@ hr {
   transform: scale(0.95);
 }
 
-.btn-first {
+.save-btn {
+  width: 100%;
   margin-left: 0px;
+  background-color: #40b866;
+  margin: 15px 0px;
+}
+
+.save-btn-mobile {
+  width: 100px;
+  float: right;
+  background-color: #40b866;
+  margin: 5px 5%;
+}
+
+.save-btn:hover,
+.save-btn-mobile:hover {
   background-color: #89d3a0;
+}
+
+.save-btn:focus,
+.save-btn-mobile:focus {
+  background-color: #40b866;
 }
 
 .editor {
