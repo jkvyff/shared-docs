@@ -10,17 +10,26 @@ body {
   background-color: rgb(240, 240, 240);
 }
 
+blockquote {
+  display: inline-block;
+  border-left: 2px solid #ddd;
+  padding-left: 10px;
+  color: #aaa;
+  font-style: italic;
+}
+
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: Consolas, "Courier New", monospace;
+  background-color: #eee;
+  padding: 3px;
 }
 
 hr {
-  margin-bottom: 20px;
+  margin: 20px 0px;
 }
 
 .btn {
-  margin: 5px 0px;
+  margin: 0px 5px;
   max-width: 740px;
   background-color: salmon;
   outline: none;
@@ -52,9 +61,15 @@ hr {
   transform: scale(0.95);
 }
 
+.btn-first {
+  margin-left: 0px;
+  background-color: #89d3a0;
+}
+
 .editor {
   color: rgb(17, 17, 17);
   max-width: 740px;
+  min-height: 200px;
   background-color: white;
   box-shadow: rgba(118, 143, 255, 0.1) 0px 16px 24px 0px;
   padding: 40px;

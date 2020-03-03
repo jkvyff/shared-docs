@@ -9,7 +9,9 @@ import { Editor, createEditor, Operation } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 import { withHistory } from "slate-history";
 import { initialValue } from "./slateInitialValue";
+
 import io from "socket.io-client";
+import { Leaf, Element } from "./Formatting";
 
 const socket = io("http://localhost:4000");
 
@@ -22,12 +24,29 @@ export const SyncedEditor: React.FC<Props> = ({ groupId }) => {
   const [value, setValue] = useState(initialValue);
   const remote = useRef(false);
   const id = useRef(`${Date.now()}`);
+  const [updatedTime, setUpdatedTime] = useState("");
+  const dayOptions: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  };
+  const timeOptions: Intl.DateTimeFormatOptions = {
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    timeZoneName: "short"
+  };
   const socketchange = useRef(false);
+  const renderElement = useCallback(props => <Element {...props} />, []);
+  const renderLeaf = useCallback(props => <Leaf {...props} />, []);
 
   useEffect(() => {
     fetch(`http://localhost:4000/docs/${groupId}`)
       .then(res => res.json())
-      .then(json => setValue(JSON.parse(json[0].body)))
+      .then(json => {
+        setValue(JSON.parse(json[0].body));
+        setUpdatedTime(json[0].timestamp.toString());
+      })
       .catch(err => {
         console.error("Error:", err);
       });
@@ -84,18 +103,50 @@ export const SyncedEditor: React.FC<Props> = ({ groupId }) => {
       body: JSON.stringify({ body: value })
     })
       .then(res => res.json())
-      .then(json => console.log(json));
+      .then(json => setUpdatedTime(json.timestamp));
   }, [value, groupId]);
+
+  const isMarkActive = (editor: any, format: string) => {
+    const marks = Editor.marks(editor);
+    return marks ? marks[format] === true : false;
+  };
+
+  const toggleMark = useCallback(
+    ev => {
+      ev.preventDefault();
+      const isActive = isMarkActive(editor, "bold");
+
+      if (isActive) {
+        Editor.removeMark(editor, "bold");
+      } else {
+        Editor.addMark(editor, "bold", true);
+      }
+    },
+    [editor]
+  );
 
   return (
     <>
       <div className="editor">
-        <button className="btn" onClick={saveDoc}>
+        <div>
+          {new Date(updatedTime).toLocaleDateString("en-US", dayOptions)}
+        </div>
+        <div>
+          {new Date(updatedTime).toLocaleTimeString("en-US", timeOptions)}
+        </div>
+        <button className="btn btn-first" onClick={saveDoc}>
           Save
+        </button>
+        <button className="btn" onMouseDown={toggleMark}>
+          Bold
         </button>
         <hr />
         <Slate editor={editor} value={value} onChange={updateOperations}>
-          <Editable />
+          <Editable
+            renderElement={renderElement}
+            renderLeaf={renderLeaf}
+            placeholder="Edit the text for all to see what you made."
+          />
         </Slate>
       </div>
     </>

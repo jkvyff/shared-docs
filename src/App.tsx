@@ -14,6 +14,13 @@ const App = () => {
             return <Redirect to={`/docs/${Date.now()}`} />;
           }}
         />
+        <Route
+          path="/docs"
+          exact
+          render={() => {
+            return <Redirect to={`/docs/${Date.now()}`} />;
+          }}
+        />
         <Route path="/docs/:id" exact component={GroupsEditor} />
       </BrowserRouter>
     </div>
