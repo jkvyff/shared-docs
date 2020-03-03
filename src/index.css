@@ -10,6 +10,46 @@ body {
   background-color: rgb(240, 240, 240);
 }
 
+h3 {
+  margin: 10px 35px;
+}
+
+.sidebar {
+  height: 45px;
+  width: 100%;
+  top: 0;
+  color: #dddddd;
+  padding: 5px;
+  background: #212121;
+  position: fixed;
+}
+
+@media screen and (min-width: 1400px) {
+  .sidebar {
+    height: 100%;
+    width: 200px;
+    top: 0;
+    color: #dddddd;
+    padding: 30px;
+  }
+}
+
+.sidebar p {
+  line-height: 1.5em;
+  font-size: 14px;
+  word-wrap: break-word;
+}
+
+.sidebar p:last-of-type {
+  height: 50px;
+  position: absolute;
+  width: 200px;
+  bottom: 0;
+  color: #bbbbbb;
+  list-style-type: none;
+  padding-bottom: 5.5em;
+}
+
 blockquote {
   display: inline-block;
   border-left: 2px solid #ddd;
@@ -73,6 +113,6 @@ hr {
   background-color: white;
   box-shadow: rgba(118, 143, 255, 0.1) 0px 16px 24px 0px;
   padding: 40px;
-  margin: 35px auto 45px;
+  margin: 80px auto 45px;
   border-radius: 4.5px;
 }
