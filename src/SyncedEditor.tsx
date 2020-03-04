@@ -5,8 +5,9 @@ import { withHistory } from "slate-history";
 import io from "socket.io-client";
 import { Leaf, Element, MarkButton, BlockButton } from "./Formatting";
 
-const socket = io("http://localhost:4000");
+const socket = io(`${process.env.REACT_APP_DOCS_API}`);
 
+console.log(process.env.REACT_APP_DOCS_API);
 interface Props {
   value: any;
   setValue: any;
@@ -28,7 +29,7 @@ export const SyncedEditor: React.FC<Props> = ({
   const renderLeaf = useCallback(props => <Leaf {...props} />, []);
 
   useEffect(() => {
-    fetch(`http://localhost:4000/docs/${groupId}`)
+    fetch(`${process.env.REACT_APP_DOCS_API}docs/${groupId}`)
       .then(res => res.json())
       .then(json => {
         setValue(JSON.parse(json[0].body));
@@ -85,9 +86,9 @@ export const SyncedEditor: React.FC<Props> = ({
       <div className="editor">
         <div>
           <MarkButton format="bold" editor={editor} />
-          <MarkButton format="code" editor={editor} />
           <MarkButton format="italic" editor={editor} />
           <MarkButton format="underline" editor={editor} />
+          <MarkButton format="code" editor={editor} />
           <BlockButton format="block-quote" editor={editor} />
           <BlockButton format="numbered-list" editor={editor} />
           <BlockButton format="bulleted-list" editor={editor} />
