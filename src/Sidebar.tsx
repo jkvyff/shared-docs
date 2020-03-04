@@ -37,6 +37,7 @@ export const Sidebar: React.FC<Props> = ({
   }, []);
 
   const saveDoc = useCallback(() => {
+    console.log(value);
     fetch(`http://localhost:4000/docs/${groupId}`, {
       method: "PUT",
       headers: {

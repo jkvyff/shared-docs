@@ -82,16 +82,16 @@ hr {
 }
 
 .btn {
-  margin: 0px 5px;
+  margin: 0px 4px;
   max-width: 740px;
-  background-color: salmon;
+  background-color: rgb(252, 98, 81);
+  padding: 6px;
   outline: none;
   color: white;
   border: none;
   text-align: center;
   text-decoration: none;
   font: 1em/1 sans-serif;
-  padding: 10px;
   cursor: pointer;
   border-radius: 5px;
   -webkit-transition: background-color 0.4s;
@@ -99,10 +99,19 @@ hr {
   -o-transition: background-color 0.4s;
   transition: background-color 0.4s;
 }
+@media screen and (max-width: 340px) {
+  .btn {
+    margin: 0px 2px;
+    padding: 4px;
+  }
+}
+
 .btn:hover,
-.btn:focus {
+.btn:focus,
+.btn.active {
   background-color: lightsalmon;
 }
+
 .btn:active {
   -webkit-transition: transform 0.2s;
   -moz-transition: transform 0.2s;
@@ -114,8 +123,13 @@ hr {
   transform: scale(0.95);
 }
 
+.btn svg {
+  overflow: visible;
+}
+
 .save-btn {
   width: 100%;
+  padding: 10px;
   margin-left: 0px;
   background-color: #40b866;
   margin: 15px 0px;
@@ -123,6 +137,7 @@ hr {
 
 .save-btn-mobile {
   width: 100px;
+  padding: 10px;
   float: right;
   background-color: #40b866;
   margin: 5px 5%;

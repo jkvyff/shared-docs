@@ -2,9 +2,8 @@ import React, { useMemo, useEffect, useRef, useCallback } from "react";
 import { Editor, createEditor, Operation } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 import { withHistory } from "slate-history";
-
 import io from "socket.io-client";
-import { Leaf, Element } from "./Formatting";
+import { Leaf, Element, MarkButton, BlockButton } from "./Formatting";
 
 const socket = io("http://localhost:4000");
 
@@ -81,31 +80,18 @@ export const SyncedEditor: React.FC<Props> = ({
     [editor.operations, groupId, setValue]
   );
 
-  const isMarkActive = (editor: any, format: string) => {
-    const marks = Editor.marks(editor);
-    return marks ? marks[format] === true : false;
-  };
-
-  const toggleMark = useCallback(
-    ev => {
-      ev.preventDefault();
-      const isActive = isMarkActive(editor, "bold");
-
-      if (isActive) {
-        Editor.removeMark(editor, "bold");
-      } else {
-        Editor.addMark(editor, "bold", true);
-      }
-    },
-    [editor]
-  );
-
   return (
     <>
       <div className="editor">
-        <button className="btn" onMouseDown={toggleMark}>
-          Bold
-        </button>
+        <div>
+          <MarkButton format="bold" editor={editor} />
+          <MarkButton format="code" editor={editor} />
+          <MarkButton format="italic" editor={editor} />
+          <MarkButton format="underline" editor={editor} />
+          <BlockButton format="block-quote" editor={editor} />
+          <BlockButton format="numbered-list" editor={editor} />
+          <BlockButton format="bulleted-list" editor={editor} />
+        </div>
         <hr />
         <Slate editor={editor} value={value} onChange={updateOperations}>
           <Editable
